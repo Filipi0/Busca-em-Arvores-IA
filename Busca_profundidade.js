@@ -1,4 +1,4 @@
-// Definição do grafo
+
 const graph = {
     'A': ['B', 'C'],
     'B': ['A', 'C', 'D'],
