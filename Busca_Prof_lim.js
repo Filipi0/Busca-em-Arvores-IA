@@ -1,48 +1,48 @@
-class Stack {
+class Pilha {
     constructor() {
-        this.items = [];
+        this.itens = [];
     }
 
-    push(item) {
-        this.items.push(item);
+    empilhar(item) {
+        this.itens.push(item);
     }
 
-    pop() {
-        return this.items.pop();
+    desempilhar() {
+        return this.itens.pop();
     }
 
-    isEmpty() {
-        return this.items.length === 0;
+    estaVazia() {
+        return this.itens.length === 0;
     }
 }
 
-function dfsLimited(graph, start, goal, maxDepth) {
-    const stack = new Stack();
-    const visited = new Set();
-    const path = [];
-    const depth = {}; // Dicionário para armazenar a profundidade de cada nó
+function dfsLimitada(graph, inicio, objetivo, profundidadeMaxima) {
+    const pilha = new Pilha();
+    const visitados = new Set();
+    const caminho = [];
+    const profundidade = {}; // Dicionário para armazenar a profundidade de cada nó
 
-    stack.push(start);
-    visited.add(start);
-    depth[start] = 0;
+    pilha.empilhar(inicio);
+    visitados.add(inicio);
+    profundidade[inicio] = 0;
 
-    while (!stack.isEmpty()) {
-        const current_node = stack.pop();
-        const current_depth = depth[current_node];
-        path.push(current_node);
+    while (!pilha.estaVazia()) {
+        const noAtual = pilha.desempilhar();
+        const profundidadeAtual = profundidade[noAtual];
+        caminho.push(noAtual);
 
-        if (current_node === goal) {
-            return path;
+        if (noAtual === objetivo) {
+            return caminho;
         }
 
-        if (current_depth < maxDepth) {
-            const neighbors = graph[current_node];
-            for (let i = neighbors.length - 1; i >= 0; i--) {
-                const neighbor = neighbors[i];
-                if (!visited.has(neighbor)) {
-                    visited.add(neighbor);
-                    stack.push(neighbor);
-                    depth[neighbor] = current_depth + 1;
+        if (profundidadeAtual < profundidadeMaxima) {
+            const vizinhos = graph[noAtual];
+            for (let i = vizinhos.length - 1; i >= 0; i--) {
+                const vizinho = vizinhos[i];
+                if (!visitados.has(vizinho)) {
+                    visitados.add(vizinho);
+                    pilha.empilhar(vizinho);
+                    profundidade[vizinho] = profundidadeAtual + 1;
                 }
             }
         }
@@ -51,8 +51,8 @@ function dfsLimited(graph, start, goal, maxDepth) {
     return null;
 }
 
-// Definição da árvore
-const graph = {
+
+const grafo = {
     'A': ['B', 'C'],
     'B': ['A', 'E', 'D'],
     'C': ['A', 'F', 'G'],
@@ -63,15 +63,14 @@ const graph = {
     'H': ['D']
 };
 
-// Executando a busca em profundidade limitada
-const startNode = 'A';
-const goalNode = 'H';
-const maxDepth = 3;
-const pathLimitedDFS = dfsLimited(graph, startNode, goalNode, maxDepth);
+const noInicio = 'A';
+const noObjetivo = 'H';
+const profundidadeMaxima = 3;
+const caminhoDFSLimitada = dfsLimitada(grafo, noInicio, noObjetivo, profundidadeMaxima);
 
-if (pathLimitedDFS) {
-    console.log("Caminho encontrado de", startNode, "até", goalNode, "usando busca em profundidade limitada:");
-    console.log(pathLimitedDFS.join(" -> "));
+if (caminhoDFSLimitada) {
+    console.log("Caminho encontrado de", noInicio, "até", noObjetivo, "usando busca em profundidade limitada:");
+    console.log(caminhoDFSLimitada.join(" -> "));
 } else {
-    console.log("Não foi encontrado um caminho de", startNode, "até", goalNode, "usando busca em profundidade limitada.");
+    console.log("Não foi encontrado um caminho de", noInicio, "até", noObjetivo, "usando busca em profundidade limitada.");
 }

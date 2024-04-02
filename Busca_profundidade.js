@@ -1,5 +1,4 @@
-
-const graph = {
+const grafo = {
     'A': ['B', 'C'],
     'B': ['A', 'E', 'D'],
     'C': ['A', 'F', 'G'],
@@ -10,49 +9,49 @@ const graph = {
     'H': ['D']
 };
 
-class Stack {
+class Pilha {
     constructor() {
-        this.items = [];
+        this.itens = [];
     }
 
-    push(item) {
-        this.items.push(item);
+    empilhar(item) {
+        this.itens.push(item);
     }
 
-    pop() {
-        return this.items.pop();
+    desempilhar() {
+        return this.itens.pop();
     }
 
-    isEmpty() {
-        return this.items.length === 0;
+    estaVazia() {
+        return this.itens.length === 0;
     }
 }
 
-function dfs(graph, start, goal) {
+function dfs(grafo, inicio, objetivo) {
     // Pilha para armazenar os nós a serem visitados
-    const stack = new Stack();
+    const pilha = new Pilha();
     // Conjunto para armazenar os nós já visitados
-    const visited = new Set();
+    const visitados = new Set();
     // Lista para armazenar o caminho
-    const path = [];
+    const caminho = [];
 
     // Adicionando o nó inicial à pilha e marcando como visitado
-    stack.push(start);
-    visited.add(start);
+    pilha.empilhar(inicio);
+    visitados.add(inicio);
 
-    while (!stack.isEmpty()) {
-        const current_node = stack.pop();
-        path.push(current_node);
+    while (!pilha.estaVazia()) {
+        const noAtual = pilha.desempilhar();
+        caminho.push(noAtual);
 
-        if (current_node === goal) {
-            return path;
+        if (noAtual === objetivo) {
+            return caminho;
         }
 
         // Iterando sobre os vizinhos do nó atual
-        for (const neighbor of graph[current_node]) {
-            if (!visited.has(neighbor)) {
-                visited.add(neighbor);
-                stack.push(neighbor);
+        for (const vizinho of grafo[noAtual]) {
+            if (!visitados.has(vizinho)) {
+                visitados.add(vizinho);
+                pilha.empilhar(vizinho);
             }
         }
     }
@@ -60,14 +59,13 @@ function dfs(graph, start, goal) {
     return null;
 }
 
-// Executando a busca em profundidade de A até H
-const startNode = 'A';
-const goalNode = 'H';
-const pathDFS = dfs(graph, startNode, goalNode);
+const noInicio = 'A';
+const noObjetivo = 'H';
+const caminhoDFS = dfs(grafo, noInicio, noObjetivo);
 
-if (pathDFS) {
-    console.log("Caminho encontrado de", startNode, "até", goalNode, "usando busca em profundidade:");
-    console.log(pathDFS.join(" -> "));
+if (caminhoDFS) {
+    console.log("Caminho encontrado de", noInicio, "até", noObjetivo, "usando busca em profundidade:");
+    console.log(caminhoDFS.join(" -> "));
 } else {
-    console.log("Não foi encontrado um caminho de", startNode, "até", goalNode, "usando busca em profundidade.");
+    console.log("Não foi encontrado um caminho de", noInicio, "até", noObjetivo, "usando busca em profundidade.");
 }

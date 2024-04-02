@@ -1,5 +1,4 @@
-
-const graph = {
+const grafo = {
     'A': ['B', 'C'],
     'B': ['A', 'E', 'D'],
     'C': ['A', 'F', 'G'],
@@ -10,47 +9,47 @@ const graph = {
     'H': ['D']
 };
 
-class Queue {
+class Fila {
     constructor() {
-        this.items = [];
+        this.itens = [];
     }
 
-    enqueue(item) {
-        this.items.push(item);
+    enfileirar(item) {
+        this.itens.push(item);
     }
 
-    dequeue() {
-        return this.items.shift();
+    desenfileirar() {
+        return this.itens.shift();
     }
 
-    isEmpty() {
-        return this.items.length === 0;
+    estaVazia() {
+        return this.itens.length === 0;
     }
 }
 
-function bfs(graph, start, goal) {
+function bfs(grafo, inicio, objetivo) {
     // Fila para armazenar os nós a serem visitados
-    const queue = new Queue();
+    const fila = new Fila();
     // Conjunto para armazenar os nós já visitados
-    const visited = new Set();
+    const visitados = new Set();
     // Array para armazenar o caminho
-    const path = [];
+    const caminho = [];
 
-    queue.enqueue(start);
-    visited.add(start);
+    fila.enfileirar(inicio);
+    visitados.add(inicio);
 
-    while (!queue.isEmpty()) {
-        const current_node = queue.dequeue();
-        path.push(current_node);
+    while (!fila.estaVazia()) {
+        const noAtual = fila.desenfileirar();
+        caminho.push(noAtual);
 
-        if (current_node === goal) {
-            return path;
+        if (noAtual === objetivo) {
+            return caminho;
         }
 
-        for (const neighbor of graph[current_node]) {
-            if (!visited.has(neighbor)) {
-                visited.add(neighbor);
-                queue.enqueue(neighbor);
+        for (const vizinho of grafo[noAtual]) {
+            if (!visitados.has(vizinho)) {
+                visitados.add(vizinho);
+                fila.enfileirar(vizinho);
             }
         }
     }
@@ -58,13 +57,13 @@ function bfs(graph, start, goal) {
     return null;
 }
 
-const startNode = 'A';
-const goalNode = 'F';
-const pathBFS = bfs(graph, startNode, goalNode);
+const noInicio = 'A';
+const noObjetivo = 'F';
+const caminhoBFS = bfs(grafo, noInicio, noObjetivo);
 
-if (pathBFS) {
-    console.log("Caminho encontrado de", startNode, "até", goalNode, "usando busca em largura:");
-    console.log(pathBFS.join(" -> "));
+if (caminhoBFS) {
+    console.log("Caminho encontrado de", noInicio, "até", noObjetivo, "usando busca em largura:");
+    console.log(caminhoBFS.join(" -> "));
 } else {
-    console.log("Não foi encontrado um caminho de", startNode, "até", goalNode, "usando busca em largura.");
+    console.log("Não foi encontrado um caminho de", noInicio, "até", noObjetivo, "usando busca em largura.");
 }

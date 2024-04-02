@@ -1,51 +1,51 @@
-class PriorityQueue {
+class FilaPrioridade {
     constructor() {
-        this.items = [];
+        this.itens = [];
     }
 
-    enqueue(item, priority) {
-        this.items.push({ item, priority });
-        this.items.sort((a, b) => a.priority - b.priority);
+    enfileirar(item, prioridade) {
+        this.itens.push({ item, prioridade });
+        this.itens.sort((a, b) => a.prioridade - b.prioridade);
     }
 
-    dequeue() {
-        if (this.isEmpty()) {
+    desenfileirar() {
+        if (this.estaVazia()) {
             return null;
         }
-        return this.items.shift().item;
+        return this.itens.shift().item;
     }
 
-    isEmpty() {
-        return this.items.length === 0;
+    estaVazia() {
+        return this.itens.length === 0;
     }
 }
 
-function uniformCostSearch(graph, start, goal) {
-    const queue = new PriorityQueue();
-    const visited = new Set();
-    const path = {};
-    const cost = {};
+function buscaCustoUniforme(grafo, inicio, objetivo) {
+    const fila = new FilaPrioridade();
+    const visitados = new Set();
+    const caminho = {};
+    const custo = {};
 
-    queue.enqueue(start, 0);
-    visited.add(start);
-    path[start] = null;
-    cost[start] = 0;
+    fila.enfileirar(inicio, 0);
+    visitados.add(inicio);
+    caminho[inicio] = null;
+    custo[inicio] = 0;
 
-    while (!queue.isEmpty()) {
-        const current_node = queue.dequeue();
+    while (!fila.estaVazia()) {
+        const noAtual = fila.desenfileirar();
 
-        if (current_node === goal) {
-            return getPath(start, goal, path);
+        if (noAtual === objetivo) {
+            return obterCaminho(inicio, objetivo, caminho);
         }
 
-        const neighbors = Object.keys(graph[current_node]);
-        for (const neighbor of neighbors) {
-            const new_cost = cost[current_node] + graph[current_node][neighbor];
-            if (!visited.has(neighbor) || new_cost < cost[neighbor]) {
-                visited.add(neighbor);
-                path[neighbor] = current_node;
-                cost[neighbor] = new_cost;
-                queue.enqueue(neighbor, new_cost);
+        const vizinhos = Object.keys(grafo[noAtual]);
+        for (const vizinho of vizinhos) {
+            const novoCusto = custo[noAtual] + grafo[noAtual][vizinho];
+            if (!visitados.has(vizinho) || novoCusto < custo[vizinho]) {
+                visitados.add(vizinho);
+                caminho[vizinho] = noAtual;
+                custo[vizinho] = novoCusto;
+                fila.enfileirar(vizinho, novoCusto);
             }
         }
     }
@@ -53,18 +53,18 @@ function uniformCostSearch(graph, start, goal) {
     return null;
 }
 
-function getPath(start, goal, path) {
-    const result = [];
-    let current_node = goal;
-    while (current_node !== null) {
-        result.unshift(current_node);
-        current_node = path[current_node];
+function obterCaminho(inicio, objetivo, caminho) {
+    const resultado = [];
+    let noAtual = objetivo;
+    while (noAtual !== null) {
+        resultado.unshift(noAtual);
+        noAtual = caminho[noAtual];
     }
-    return result;
+    return resultado;
 }
 
 // Definição do grafo com valores de arestas
-const graph = {
+const grafo = {
     'A': { 'B': 1, 'C': 5 },
     'B': { 'A': 1, 'C': 3, 'D': 6, 'E': 1, 'H': 5 },
     'C': { 'A': 5, 'B': 3, 'D': 2, 'E': 3, 'F': 2, 'G': 4 },
@@ -75,15 +75,15 @@ const graph = {
     'H': { 'B': 5, 'D': 3 }
 };
 
-// Executando a busca de custo uniforme de A até E
-const startNode = 'A';
-const goalNode = 'G';
-const pathUCS = uniformCostSearch(graph, startNode, goalNode);
 
-if (pathUCS) {
-    console.log("Caminho encontrado de", startNode, "até", goalNode, "usando busca de custo uniforme:");
-    console.log(pathUCS.join(" -> "));
-    console.log("Custo total:", pathUCS.reduce((acc, node, i) => i > 0 ? acc + graph[pathUCS[i - 1]][node] : 0, 0));
+const noInicio = 'A';
+const noObjetivo = 'G';
+const caminhoCustoUniforme = buscaCustoUniforme(grafo, noInicio, noObjetivo);
+
+if (caminhoCustoUniforme) {
+    console.log("Caminho encontrado de", noInicio, "até", noObjetivo, "usando busca de custo uniforme:");
+    console.log(caminhoCustoUniforme.join(" -> "));
+    console.log("Custo total:", caminhoCustoUniforme.reduce((acc, no, i) => i > 0 ? acc + grafo[caminhoCustoUniforme[i - 1]][no] : 0, 0));
 } else {
-    console.log("Não foi encontrado um caminho de", startNode, "até", goalNode, "usando busca de custo uniforme.");
+    console.log("Não foi encontrado um caminho de", noInicio, "até", noObjetivo, "usando busca de custo uniforme.");
 }

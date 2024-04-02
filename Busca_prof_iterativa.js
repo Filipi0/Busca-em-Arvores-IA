@@ -1,53 +1,53 @@
-class Stack {
+class Pilha {
     constructor() {
-        this.items = [];
+        this.itens = [];
     }
 
-    push(item) {
-        this.items.push(item);
+    empilhar(item) {
+        this.itens.push(item);
     }
 
-    pop() {
-        return this.items.pop();
+    desempilhar() {
+        return this.itens.pop();
     }
 
-    isEmpty() {
-        return this.items.length === 0;
+    estaVazia() {
+        return this.itens.length === 0;
     }
 }
 
-function dfsLimitedIterative(graph, start, goal, maxDepth) {
-    const stack = new Stack();
-    const visited = new Set();
-    const path = [];
-    const depth = {}; // Dicionário para armazenar a profundidade de cada nó
+function dfsLimitadaIterativa(grafo, inicio, objetivo, profundidadeMaxima) {
+    const pilha = new Pilha();
+    const visitados = new Set();
+    const caminho = [];
+    const profundidade = {};
 
-    stack.push({ node: start, depth: 0 });
+    pilha.empilhar({ no: inicio, profundidade: 0 });
 
-    while (!stack.isEmpty()) {
-        const { node, depth: currentDepth } = stack.pop();
+    while (!pilha.estaVazia()) {
+        const { no, profundidadeAtual } = pilha.desempilhar();
 
         // Verifica se alcançou o objetivo
-        if (node === goal) {
-            path.push(node);
-            return path;
+        if (no === objetivo) {
+            caminho.push(no);
+            return caminho;
         }
 
         // Verifica se a profundidade atual excede o limite
-        if (currentDepth >= maxDepth) {
-            continue; // Passa para o próximo nó
+        if (profundidadeAtual >= profundidadeMaxima) {
+            continue;
         }
 
         // Adiciona o nó à pilha e marca como visitado
-        if (!visited.has(node)) {
-            visited.add(node);
-            path.push(node);
+        if (!visitados.has(no)) {
+            visitados.add(no);
+            caminho.push(no);
 
-            const neighbors = graph[node];
-            for (let i = neighbors.length - 1; i >= 0; i--) {
-                const neighbor = neighbors[i];
-                if (!visited.has(neighbor)) {
-                    stack.push({ node: neighbor, depth: currentDepth + 1 });
+            const vizinhos = grafo[no];
+            for (let i = vizinhos.length - 1; i >= 0; i--) {
+                const vizinho = vizinhos[i];
+                if (!visitados.has(vizinho)) {
+                    pilha.empilhar({ no: vizinho, profundidade: profundidadeAtual + 1 });
                 }
             }
         }
@@ -56,8 +56,7 @@ function dfsLimitedIterative(graph, start, goal, maxDepth) {
     return null;
 }
 
-// Definição da árvore
-const graph = {
+const grafo = {
     'A': ['B', 'C'],
     'B': ['A', 'E', 'D'],
     'C': ['A', 'F', 'G'],
@@ -68,16 +67,16 @@ const graph = {
     'H': ['D']
 };
 
-// Executando a busca em profundidade limitada iterativa de A até F com limite de profundidade 2
-const startNode = 'A';
-const goalNode = 'B';
-const maxDepth = 2;
-const pathLimitedDFSIterative = dfsLimitedIterative(graph, startNode, goalNode, maxDepth);
 
-if (pathLimitedDFSIterative) {
-    console.log("Caminho encontrado de", startNode, "até", goalNode, "usando busca em profundidade limitada iterativa:");
-    console.log(pathLimitedDFSIterative.join(" -> "));
-    console.log("Profundidade:", pathLimitedDFSIterative.length - 1);
+const noInicio = 'A';
+const noObjetivo = 'B';
+const profundidadeMaxima = 2;
+const caminhoDFSIterativoLimitado = dfsLimitadaIterativa(grafo, noInicio, noObjetivo, profundidadeMaxima);
+
+if (caminhoDFSIterativoLimitado) {
+    console.log("Caminho encontrado de", noInicio, "até", noObjetivo, "usando busca em profundidade limitada iterativa:");
+    console.log(caminhoDFSIterativoLimitado.join(" -> "));
+    console.log("Profundidade:", caminhoDFSIterativoLimitado.length - 1);
 } else {
-    console.log("Não foi encontrado um caminho de", startNode, "até", goalNode, "usando busca em profundidade limitada iterativa.");
+    console.log("Não foi encontrado um caminho de", noInicio, "até", noObjetivo, "usando busca em profundidade limitada iterativa.");
 }

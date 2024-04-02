@@ -59,7 +59,7 @@ function obterCaminho(inicio, objetivo, caminho) {
     return resultado;
 }
 
-// Definição do grafo com valores de arestas e heurísticas
+
 const grafo = {
     'A': { 'B': 1, 'C': 5 },
     'B': { 'A': 1, 'C': 3, 'D': 6, 'E': 1, 'H': 5 },
@@ -82,7 +82,7 @@ const heuristica = {
     'G': 3,  //estimativa para o nó G
     'H': 0   //estimativa para o nó H
 }
-// Executando a busca gulosa de A até E
+//teste de busca gulosa de A até H
 const noInicio = 'A';
 const noObjetivo = 'H';
 const caminhoGuloso = buscaGulosa(grafo, noInicio, noObjetivo, heuristica);
