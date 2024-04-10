@@ -90,6 +90,7 @@ const caminhoGuloso = buscaGulosa(grafo, noInicio, noObjetivo, heuristica);
 if (caminhoGuloso) {
     console.log("Caminho encontrado de", noInicio, "até", noObjetivo, "usando busca gulosa:");
     console.log(caminhoGuloso.join(" -> "));
+    console.log("Custo total:", caminhoGuloso.reduce((total, no, i) => i > 0 ? total + grafo[caminhoGuloso[i - 1]][no] : 0, 0));
 } else {
     console.log("Não foi encontrado um caminho de", noInicio, "até", noObjetivo, "usando busca gulosa.");
 }

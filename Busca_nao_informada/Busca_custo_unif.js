@@ -1,3 +1,14 @@
+const grafo = {
+    'A': { 'B': 1, 'C': 5 },
+    'B': { 'A': 1, 'C': 3, 'D': 6, 'E': 1, 'H': 5 },
+    'C': { 'A': 5, 'B': 3, 'D': 2, 'E': 3, 'F': 2, 'G': 4 },
+    'D': { 'B': 6, 'C': 2, 'H': 3 },
+    'E': { 'B': 1, 'C': 3 },
+    'F': { 'C': 2 },
+    'G': { 'C': 4 },
+    'H': { 'B': 5, 'D': 3 }
+};
+
 class FilaPrioridade {
     constructor() {
         this.itens = [];
@@ -62,19 +73,6 @@ function obterCaminho(inicio, objetivo, caminho) {
     }
     return resultado;
 }
-
-// Definição do grafo com valores de arestas
-const grafo = {
-    'A': { 'B': 1, 'C': 5 },
-    'B': { 'A': 1, 'C': 3, 'D': 6, 'E': 1, 'H': 5 },
-    'C': { 'A': 5, 'B': 3, 'D': 2, 'E': 3, 'F': 2, 'G': 4 },
-    'D': { 'B': 6, 'C': 2, 'H': 3 },
-    'E': { 'B': 1, 'C': 3 },
-    'F': { 'C': 2 },
-    'G': { 'C': 4 },
-    'H': { 'B': 5, 'D': 3 }
-};
-
 
 const noInicio = 'A';
 const noObjetivo = 'G';
