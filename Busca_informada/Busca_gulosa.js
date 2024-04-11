@@ -59,7 +59,6 @@ function obterCaminho(inicio, objetivo, caminho) {
     return resultado;
 }
 
-// Mapa da Romênia
 const romenia = {
     'Arad': { 'Zerind': 75, 'Sibiu': 140, 'Timisoara': 118 },
     'Zerind': { 'Arad': 75, 'Oradea': 71 },
@@ -76,7 +75,6 @@ const romenia = {
     'Bucharest': { 'Fagaras': 211, 'Pitesti': 101 }
 };
 
-// Heurísticas para cada cidade
 const heuristica = {
     'Arad': 366,
     'Zerind': 374,
@@ -104,3 +102,5 @@ if (caminhoGuloso) {
 } else {
     console.log("Não foi encontrado um caminho de", noInicio, "até", noObjetivo, "usando busca gulosa.");
 }
+
+// eu tive que modificar o grafo para que o código funcionasse corretamente.

@@ -64,7 +64,6 @@ function obterCaminho(inicio, objetivo, caminho) {
     return resultado;
 }
 
-// Definição do grafo da Romênia
 const grafo = {
     'Arad': { 'Zerind': 75, 'Sibiu': 140, 'Timisoara': 118 },
     'Zerind': { 'Arad': 75, 'Oradea': 71 },
@@ -81,7 +80,7 @@ const grafo = {
     'Bucharest': { 'Fagaras': 211, 'Pitesti': 101 }
 };
 
-// Heurísticas para cada cidade
+
 const heuristica = {
     'Arad': 366,
     'Zerind': 374,
@@ -98,7 +97,6 @@ const heuristica = {
     'Bucharest': 0
 };
 
-// Executando a busca A*
 const inicio = 'Arad';
 const objetivo = 'Bucharest';
 const caminhoAStar = buscaAStar(grafo, inicio, objetivo, heuristica);
@@ -112,4 +110,4 @@ if (caminhoAStar) {
 }
 
 
-// Infelizmente só consegui implementar a busca A* para o grafo da Romênia, pois não consegui entender como implementar a heurística para o grafo do exemplo da busca não informada.
+// Eu não consegui implementar a busca A* para o grafo da busca não informada, pois não consegui entender como implementar a heurística para o grafo.
