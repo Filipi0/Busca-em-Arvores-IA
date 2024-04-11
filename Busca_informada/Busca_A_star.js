@@ -20,13 +20,15 @@ class FilaPrioridade {
     }
 }
 
-function buscaGulosa(grafo, inicio, objetivo, heuristica) {
+function buscaAStar(grafo, inicio, objetivo, heuristica) {
     const fila = new FilaPrioridade();
     const visitados = new Set();
     const caminho = {};
+    const custoReal = {};
 
-    fila.enfileirar(inicio, heuristica[inicio]);
+    fila.enfileirar(inicio, 0);
     visitados.add(inicio);
+    custoReal[inicio] = 0;
     caminho[inicio] = null;
 
     while (!fila.estaVazia()) {
@@ -38,10 +40,13 @@ function buscaGulosa(grafo, inicio, objetivo, heuristica) {
 
         const vizinhos = Object.keys(grafo[noAtual]);
         for (const vizinho of vizinhos) {
-            if (!visitados.has(vizinho)) {
+            const novoCusto = custoReal[noAtual] + grafo[noAtual][vizinho];
+            if (!visitados.has(vizinho) || novoCusto < custoReal[vizinho]) {
                 visitados.add(vizinho);
+                custoReal[vizinho] = novoCusto;
+                const prioridade = novoCusto + heuristica[vizinho];
                 caminho[vizinho] = noAtual;
-                fila.enfileirar(vizinho, heuristica[vizinho]);
+                fila.enfileirar(vizinho, prioridade);
             }
         }
     }
@@ -59,8 +64,8 @@ function obterCaminho(inicio, objetivo, caminho) {
     return resultado;
 }
 
-// Mapa da Romênia
-const romenia = {
+// Definição do grafo da Romênia
+const grafo = {
     'Arad': { 'Zerind': 75, 'Sibiu': 140, 'Timisoara': 118 },
     'Zerind': { 'Arad': 75, 'Oradea': 71 },
     'Oradea': { 'Zerind': 71, 'Sibiu': 151 },
@@ -93,14 +98,18 @@ const heuristica = {
     'Bucharest': 0
 };
 
-const noInicio = 'Arad';
-const noObjetivo = 'Bucharest';
-const caminhoGuloso = buscaGulosa(romenia, noInicio, noObjetivo, heuristica);
+// Executando a busca A*
+const inicio = 'Arad';
+const objetivo = 'Bucharest';
+const caminhoAStar = buscaAStar(grafo, inicio, objetivo, heuristica);
 
-if (caminhoGuloso) {
-    console.log("Caminho encontrado de", noInicio, "até", noObjetivo, "usando busca gulosa:");
-    console.log(caminhoGuloso.join(" -> "));
-    console.log("Custo total:", caminhoGuloso.reduce((total, cidade, i) => i > 0 ? total + romenia[caminhoGuloso[i - 1]][cidade] : 0, 0));
+if (caminhoAStar) {
+    console.log("Caminho encontrado de", inicio, "até", objetivo, "usando A*:");
+    console.log(caminhoAStar.join(" -> "));
+    console.log("Custo total:", caminhoAStar.reduce((total, cidade, i) => i > 0 ? total + grafo[caminhoAStar[i - 1]][cidade] : 0, 0));
 } else {
-    console.log("Não foi encontrado um caminho de", noInicio, "até", noObjetivo, "usando busca gulosa.");
+    console.log("Não foi encontrado um caminho de", inicio, "até", objetivo, "usando A*.");
 }
+
+
+// Infelizmente só consegui implementar a busca A* para o grafo da Romênia, pois não consegui entender como implementar a heurística para o grafo do exemplo da busca não informada.
